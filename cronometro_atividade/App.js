@@ -7,6 +7,7 @@ export default function App() {
   const [pastTime, setPastTime] = useState(0);
   const [startedTime, setStaredTime] = useState(false);
   const [storageLastTime,setStorageLastTime] = useState(0)
+  const [showButton,setShowButton] = useState(false)
   const clearTimeStopWatch = () => {
     clearInterval(this.interval);
     setStorageLastTime(pastTime)
@@ -15,11 +16,13 @@ export default function App() {
   };
 
   const pauseStopWatch = () => {
+    setShowButton(!showButton)
     if (startedTime) {
       setStaredTime(false)
     }
   };
   const EventPlaystopwatch = () => {
+    setShowButton(!showButton)
     if(!startedTime){
        setStaredTime(true)
     }
@@ -28,7 +31,6 @@ export default function App() {
 console.log(moment.utc(pastTime * 1000).format("HH:mm:ss"))
   useEffect(() => {
     let interval
-    EventPlaystopwatch()
     if (startedTime) {
      
       interval = setInterval(() => {
@@ -50,11 +52,18 @@ console.log(moment.utc(pastTime * 1000).format("HH:mm:ss"))
       </View>
 
       <View style={styles.containerButtons}>
-        <TouchableOpacity style={styles.botao} onPress={pauseStopWatch}>
+       {showButton == true ?  <TouchableOpacity style={styles.botao} onPress={pauseStopWatch}>
           <View style={styles.btnArea}>
             <Text style={styles.btnTexto}>Parar</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> : <TouchableOpacity style={styles.botao} onPress={EventPlaystopwatch}>
+          <View style={styles.btnArea}>
+            <Text style={styles.btnTexto}>Iniciar</Text>
+          </View>
+        </TouchableOpacity> 
+       }
+      
+       
         <TouchableOpacity style={styles.botao} onPress={clearTimeStopWatch}>
           <View style={styles.btnArea}>
             <Text style={styles.btnTexto}>Limpar</Text>
